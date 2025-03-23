@@ -1,52 +1,26 @@
 import sqlite3
-import sys
-import io
-from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
+from PyQt5 import QtWidgets, uic
 
-
-f = 'coffee.sqlite'
-con = sqlite3.connect(f)
-cur = con.cursor()
-
-
-class MyWidget(QMainWindow):
+class CoffeeApp(QtWidgets.QMainWindow):
     def __init__(self):
-        super().__init__()
+        super(CoffeeApp, self).__init__()
         uic.loadUi('main.ui', self)
-        self.s = cur.execute('PRAGMA table_info("cof")')
-        self.column_names = [i[1] for i in cur.fetchall()]
-        self.result = cur.execute(f'''select * from cof''').fetchall()
-        self.tableWidget.setColumnCount(7)
-        self.tableWidget.setHorizontalHeaderLabels(self.column_names)
-        self.tableWidget.setRowCount(0)
-        for i, row in enumerate(self.result):
-            self.tableWidget.setRowCount(
-                self.tableWidget.rowCount() + 1)
-            for j, elem in enumerate(row):
-                self.tableWidget.setItem(
-                    i, j, QTableWidgetItem(str(elem)))
+        self.load_coffee_data()
 
-    def adding(self):
-        self.add_form = AddWidget(self)
-        self.add_form.show()
+    def load_coffee_data(self):
+        conn = sqlite3.connect('coffee.sqlite')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM coffee")
+        rows = cursor.fetchall()
+        for row in rows:
+            self.coffee_table.insertRow(self.coffee_table.rowCount())
+            for i, value in enumerate(row):
+                self.coffee_table.setItem(self.coffee_table.rowCount() - 1, i, QtWidgets.QTableWidgetItem(str(value)))
+        conn.close()
 
-    def update_result(self):
-        self.column_names = [i[1] for i in cur.fetchall()]
-        self.result = cur.execute('''select * from cof''')
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setHorizontalHeaderLabels(self.column_names)
-        self.tableWidget.setRowCount(0)
-        for i, row in enumerate(self.result):
-            self.tableWidget.setRowCount(
-                self.tableWidget.rowCount() + 1)
-            for j, elem in enumerate(row):
-                self.tableWidget.setItem(
-                    i, j, QTableWidgetItem(str(elem)))
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = MyWidget()
-    ex.show()
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    window = CoffeeApp()
+    window.show()
     sys.exit(app.exec_())
