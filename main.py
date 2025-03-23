@@ -1,17 +1,20 @@
+import sys
 import sqlite3
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets
+from UI.main_ui import Ui_MainWindow
+from UI.addEditCoffeeForm_ui import Ui_AddEditCoffeeForm
 
 
-class AddEditCoffeeForm(QtWidgets.QDialog):
+class AddEditCoffeeForm(QtWidgets.QDialog, Ui_AddEditCoffeeForm):
     def __init__(self, parent=None, coffee_id=None):
         super(AddEditCoffeeForm, self).__init__(parent)
-        uic.loadUi('addEditCoffeeForm.ui', self)
+        self.setupUi(self)
         self.coffee_id = coffee_id
         if self.coffee_id:
             self.load_coffee_data()
 
     def load_coffee_data(self):
-        conn = sqlite3.connect('coffee.sqlite')
+        conn = sqlite3.connect('data/coffee.sqlite')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM coffee WHERE id=?", (self.coffee_id,))
         coffee_data = cursor.fetchone()
@@ -32,7 +35,7 @@ class AddEditCoffeeForm(QtWidgets.QDialog):
         price = float(self.priceInput.text())
         package_volume = float(self.packageVolumeInput.text())
 
-        conn = sqlite3.connect('coffee.sqlite')
+        conn = sqlite3.connect('data/coffee.sqlite')
         cursor = conn.cursor()
         if self.coffee_id:
             cursor.execute(
@@ -49,17 +52,17 @@ class AddEditCoffeeForm(QtWidgets.QDialog):
         self.accept()
 
 
-class CoffeeApp(QtWidgets.QMainWindow):
+class CoffeeApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(CoffeeApp, self).__init__()
-        uic.loadUi('main.ui', self)
+        self.setupUi(self)
         self.load_coffee_data()
         self.addButton.clicked.connect(self.open_add_coffee_form)
         self.editButton.clicked.connect(self.open_edit_coffee_form)
 
     def load_coffee_data(self):
         self.coffee_table.setRowCount(0)
-        conn = sqlite3.connect('coffee.sqlite')
+        conn = sqlite3.connect('data/coffee.sqlite')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM coffee")
         rows = cursor.fetchall()
@@ -84,7 +87,6 @@ class CoffeeApp(QtWidgets.QMainWindow):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     window = CoffeeApp()
     window.show()
