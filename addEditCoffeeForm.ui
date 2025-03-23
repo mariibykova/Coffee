@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddEditCoffeeForm</class>
+ <widget class="QDialog" name="AddEditCoffeeForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Добавить/Редактировать кофе</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLineEdit" name="nameInput">
+     <property name="placeholderText">
+      <string>Название сорта</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="roastLevelInput">
+     <property name="placeholderText">
+      <string>Степень обжарки</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="groundOrBeansInput">
+     <item>
+      <property name="text">
+       <string>Молотый</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>В зернах</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="tasteDescriptionInput">
+     <property name="placeholderText">
+      <string>Описание вкуса</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="priceInput">
+     <property name="placeholderText">
+      <string>Цена</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="packageVolumeInput">
+     <property name="placeholderText">
+      <string>Объем упаковки</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
